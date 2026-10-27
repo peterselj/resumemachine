@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ResumeMachine</title>
+<meta name="description" content="Tailor your resume to any job posting using the AI assistant you already have: Claude, ChatGPT, or Gemini. Free, no signup, your data stays in your own account.">
+<meta property="og:title" content="ResumeMachine">
+<meta property="og:description" content="Tailor your resume to any job posting with the AI you already use. One-line setup.">
+<link rel="alternate" type="text/markdown" href="resumemachine.md" title="ResumeMachine setup guide for AI assistants">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Shares JobBoard's palette and type: forest green on warm paper,
+     Hanken Grotesk (UI) + IBM Plex Mono (code/data). */
+  :root {
+    --paper: #f3f3ee;
+    --paper-2: #fbfbf8;
+    --surface: #ffffff;
+    --ink: #1b211d;
+    --ink-soft: #3c453e;
+    --muted: #6f776d;
+    --faint: #9aa298;
+    --line: #e6e6df;
+    --line-strong: #d4d5cc;
+    --forest: #234c3a;
+    --forest-hover: #15352a;
+    --forest-soft: #eef4f0;
+    --forest-text: #234c3a;
+    --on-forest: #ffffff;
+    --sage: #5e8f72;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #141916;
+      --paper-2: #1b211d;
+      --surface: #1b211d;
+      --ink: #f3f3ee;
+      --ink-soft: #d4d5cc;
+      --muted: #9aa298;
+      --faint: #6f776d;
+      --line: #2b332c;
+      --line-strong: #3c453e;
+      --forest: #5e8f72;
+      --forest-hover: #7fa589;
+      --forest-soft: #1f2e26;
+      --forest-text: #aebfb0;
+      --on-forest: #0f2a21;
+      --sage: #7fa589;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #141916;
+    --paper-2: #1b211d;
+    --surface: #1b211d;
+    --ink: #f3f3ee;
+    --ink-soft: #d4d5cc;
+    --muted: #9aa298;
+    --faint: #6f776d;
+    --line: #2b332c;
+    --line-strong: #3c453e;
+    --forest: #5e8f72;
+    --forest-hover: #7fa589;
+    --forest-soft: #1f2e26;
+    --forest-text: #aebfb0;
+    --on-forest: #0f2a21;
+    --sage: #7fa589;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 16px/1.6 "Hanken Grotesk", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+  a { color: var(--forest-text); text-underline-offset: 2px; }
+  h1, h2, h3 { line-height: 1.15; margin: 0; letter-spacing: -0.015em; }
+  code, pre, .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+
+  header.top { background: var(--surface); border-bottom: 1px solid var(--line-strong); }
+  header.top .wrap { height: 48px; display: flex; align-items: center; gap: 16px; }
+  .brand { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
+  .top nav { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+  .top nav a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; }
+  .top nav a:hover { color: var(--ink); }
+  .version { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--faint); }
+
+  .hero { padding: 48px 0 8px; }
+  .hero h1 { font-size: clamp(32px, 7vw, 48px); font-weight: 800; letter-spacing: -0.025em; }
+  .hero p.lede { font-size: 19px; color: var(--ink-soft); margin: 16px 0 0; max-width: 600px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .pill { font-size: 13px; font-weight: 500; padding: 3px 10px; border-radius: 999px; background: var(--forest-soft); color: var(--forest-text); }
+
+  section { padding: 40px 0 8px; }
+  section > h2 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+  section > p.sub { color: var(--muted); margin: 0 0 18px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(27,33,29,.05);
+    padding: 20px;
+  }
+  .quick { border: 1px solid var(--forest); box-shadow: 0 0 0 3px var(--forest-soft); }
+  .label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--forest-text); }
+  .prompt-box {
+    display: flex; gap: 12px; align-items: center; margin-top: 12px;
+    background: var(--paper-2); border: 1px solid var(--line); border-radius: 8px; padding: 14px;
+  }
+  .prompt-box code { flex: 1; font-size: 14px; line-height: 1.55; word-break: break-word; color: var(--ink-soft); }
+  .btn {
+    appearance: none; border: 1px solid transparent; cursor: pointer;
+    font: 600 14px/1 "Hanken Grotesk", system-ui, sans-serif;
+    padding: 9px 14px; border-radius: 6px;
+    background: var(--forest); color: var(--on-forest);
+    box-shadow: 0 1px 2px rgba(27,33,29,.08);
+    white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    transition: background-color .12s ease;
+  }
+  .btn:hover { background: var(--forest-hover); }
+  .btn.secondary { background: var(--surface); color: var(--ink-soft); border-color: var(--line-strong); }
+  .btn.secondary:hover { background: var(--paper-2); }
+  .btn.done, .btn.secondary.done { background: var(--sage); color: #fff; border-color: transparent; }
+  .fine { font-size: 14px; color: var(--muted); margin: 12px 0 0; }
+
+  .steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+  .steps > li { counter-increment: s; position: relative; padding: 0 0 18px 42px; }
+  .steps > li::before {
+    content: counter(s); position: absolute; left: 0; top: 0;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--forest); color: var(--on-forest);
+    font: 600 13px/26px "IBM Plex Mono", monospace; text-align: center;
+  }
+  .steps > li:last-child { padding-bottom: 0; }
+  .steps strong { display: block; }
+  .steps p { margin: 2px 0 0; color: var(--muted); }
+
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .grid .card { padding: 16px; }
+  .grid h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; letter-spacing: 0; }
+  .grid p { margin: 0; font-size: 14.5px; color: var(--muted); }
+
+  .tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+  .tab {
+    appearance: none; background: none; border: 0; cursor: pointer;
+    font: 500 15px/1 "Hanken Grotesk", system-ui, sans-serif; color: var(--muted);
+    padding: 10px 12px; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--forest); }
+  .panel[hidden] { display: none; }
+  .panel ol { margin: 0; padding-left: 20px; }
+  .panel li { margin-bottom: 8px; }
+  .note { font-size: 14px; color: var(--muted); margin: 14px 0 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+
+  .tips li { margin-bottom: 8px; }
+
+  footer { padding: 48px 0 40px; color: var(--muted); font-size: 14px; }
+  footer .ai-note { overflow-wrap: anywhere; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; }
+
+  @media (max-width: 520px) {
+    .prompt-box { flex-direction: column; align-items: stretch; }
+    .prompt-box .btn { justify-content: center; }
+    .top nav a:first-child { display: none; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./">📄 ResumeMachine</a>
+    <nav>
+      <a href="#manual">Manual setup</a>
+      <a href="resumemachine.md">Read the instructions</a>
+      <span class="version">v0.1</span>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+
+
+  <div class="hero">
+    <h1>Tailor your resume to any job, with the AI you already use.</h1>
+    <p class="lede">ResumeMachine turns Claude, ChatGPT, or Gemini into a resume editor that reads a job posting, tells you honestly how you fit, and rewrites your resume for it, without making anything up.</p>
+    <div class="pills">
+      <span class="pill">Free</span>
+      <span class="pill">No signup</span>
+      <span class="pill">Your resume never touches this site</span>
+      <span class="pill">Works with Claude · ChatGPT · Gemini</span>
+    </div>
+  </div>
+
+  <section id="start">
+    <div class="card quick">
+      <div class="label">Fastest setup: one message</div>
+      <p style="margin:8px 0 0">Paste this into a new chat with your AI assistant. It'll walk you through the rest.</p>
+      <div class="prompt-box">
+        <code id="oneliner">Read https://peterselj.github.io/resumemachine/resumemachine.md and walk me through setting up ResumeMachine.</code>
+        <button class="btn" data-copy="oneliner">Copy</button>
+      </div>
+      <p class="fine">Some assistants can't open links, depending on the app or plan. If yours says it can't, use the <a href="#manual">manual setup</a> below. It takes about three minutes.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What you get, for every job</h2>
+    <p class="sub">Paste a job posting into your ResumeMachine workspace and get back:</p>
+    <div class="grid">
+      <div class="card"><h3>Honest fit check</h3><p>Strong, stretch, or long shot, plus your best matches and real gaps.</p></div>
+      <div class="card"><h3>Tailored resume</h3><p>Reordered, reworded, and keyword-matched to the posting. Ready to paste.</p></div>
+      <div class="card"><h3>No fabrication</h3><p>It never invents titles, dates, or numbers. It asks when it needs a detail.</p></div>
+      <div class="card"><h3>Referral ask</h3><p>A short message to send a contact at the company, because referrals beat cold applications.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>How it works</h2>
+    <p class="sub">You set up a permanent workspace once. After that, every job takes about a minute.</p>
+    <div class="card">
+      <ol class="steps">
+        <li><strong>Create a workspace in your AI app</strong><p>A Project in Claude or ChatGPT, or a Gem in Gemini. It remembers the instructions and your resume.</p></li>
+        <li><strong>Add the ResumeMachine instructions and your base resume</strong><p>The instructions are a plain text file you can <a href="resumemachine.md">read in full</a>. Your resume goes straight into your own AI account.</p></li>
+        <li><strong>Paste a job posting</strong><p>Open a new chat in the workspace, paste the full posting, and review what comes back.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="manual">
+    <h2>Manual setup</h2>
+    <p class="sub">Prefer to do it yourself? Get the instructions file, then follow the steps for your assistant.</p>
+    <div class="card">
+      <div class="actions">
+        <a class="btn" href="resumemachine.md" download="ResumeMachine.md">Download instructions</a>
+        <button class="btn secondary" id="copy-instructions">Copy instructions</button>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" aria-controls="p-claude" id="t-claude">Claude</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p-chatgpt" id="t-chatgpt">ChatGPT</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p-gemini" id="t-gemini">Gemini</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p-other" id="t-other">Other</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-claude" aria-labelledby="t-claude">
+        <ol>
+          <li>Go to <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> and open <strong>Projects</strong> in the sidebar, then <strong>Create project</strong>. Name it "ResumeMachine".</li>
+          <li>Open the project's <strong>instructions</strong> and paste the ResumeMachine instructions.</li>
+          <li>Upload your base resume to the project's <strong>files</strong>.</li>
+          <li>Start a new chat in the project and paste a job posting.</li>
+        </ol>
+      </div>
+      <div class="panel" role="tabpanel" id="p-chatgpt" aria-labelledby="t-chatgpt" hidden>
+        <ol>
+          <li>Go to <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a> and choose <strong>New project</strong> in the sidebar. Name it "ResumeMachine".</li>
+          <li>Open the project settings and paste the ResumeMachine instructions into <strong>Instructions</strong>.</li>
+          <li>Add your base resume under the project's <strong>Files</strong>.</li>
+          <li>Start a new chat in the project and paste a job posting.</li>
+        </ol>
+        <p class="note">No Projects on your plan? Make a private custom GPT instead: paste the instructions on the Configure tab and upload your resume under Knowledge.</p>
+      </div>
+      <div class="panel" role="tabpanel" id="p-gemini" aria-labelledby="t-gemini" hidden>
+        <ol>
+          <li>Go to <a href="https://gemini.google.com" target="_blank" rel="noopener">gemini.google.com</a>, open the <strong>Gem manager</strong>, and choose <strong>New Gem</strong>. Name it "ResumeMachine".</li>
+          <li>Paste the ResumeMachine instructions into the Gem's <strong>Instructions</strong>.</li>
+          <li>Upload your base resume under <strong>Knowledge</strong>.</li>
+          <li>Save, open the Gem, and paste a job posting.</li>
+        </ol>
+      </div>
+      <div class="panel" role="tabpanel" id="p-other" aria-labelledby="t-other" hidden>
+        <ol>
+          <li>Look for a feature that saves instructions and files across chats. It might be called projects, spaces, agents, or custom instructions.</li>
+          <li>If you find one, paste the ResumeMachine instructions and attach your base resume.</li>
+          <li>If not, start each chat by pasting the instructions and attaching your resume, then paste the job posting.</li>
+        </ol>
+      </div>
+      <p class="note">App menus change often. If a label doesn't match exactly, look for the closest equivalent, or ask the assistant itself where to find it.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tips for better results</h2>
+    <div class="card">
+      <ul class="tips" style="margin:0;padding-left:20px">
+        <li><strong>Make your base resume a master copy.</strong> Long is fine. Include every role, project, and win you might want to use. ResumeMachine picks what's relevant; it can't add what isn't there.</li>
+        <li><strong>Include numbers.</strong> Team sizes, budgets, percentages, timeframes. These make the strongest bullets.</li>
+        <li><strong>Paste the full posting text</strong>, not just a link. Many job sites block AI assistants from reading them.</li>
+        <li><strong>Answer its questions.</strong> When it asks for a detail, your answer makes the resume better. Add it to your base resume too.</li>
+        <li><strong>Always read the final version.</strong> It's your name on it. Check every claim before you send it.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ai-note"><strong>For AI assistants:</strong> the setup guide and working instructions are at <a href="resumemachine.md">peterselj.github.io/resumemachine/resumemachine.md</a>.</div>
+    <p>ResumeMachine is part of a small set of job search tools. See also <a href="https://peterselj.github.io/JobBoard/">JobBoard</a>, a referral-first CRM for your job search.</p>
+  </footer>
+
+</div>
+
+<script>
+  function flash(btn, text) {
+    const original = btn.textContent;
+    btn.textContent = text;
+    btn.classList.add('done');
+    setTimeout(() => { btn.textContent = original; btn.classList.remove('done'); }, 1600);
+  }
+
+  async function copyText(text, btn) {
+    try {
+      await navigator.clipboard.writeText(text);
+      flash(btn, 'Copied!');
+    } catch (e) {
+      flash(btn, 'Copy failed');
+    }
+  }
+
+  document.querySelectorAll('[data-copy]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      copyText(document.getElementById(btn.dataset.copy).textContent.trim(), btn);
+    });
+  });
+
+  document.getElementById('copy-instructions').addEventListener('click', async e => {
+    const btn = e.currentTarget;
+    try {
+      const res = await fetch('resumemachine.md');
+      if (!res.ok) throw new Error(res.status);
+      copyText(await res.text(), btn);
+    } catch (err) {
+      flash(btn, 'Copy failed');
+    }
+  });
+
+  const tabs = document.querySelectorAll('.tab');
+  function selectTab(tab) {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on);
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    try { localStorage.setItem('rm-tab', tab.id); } catch (e) {}
+  }
+  tabs.forEach(t => t.addEventListener('click', () => selectTab(t)));
+  try {
+    const saved = document.getElementById(localStorage.getItem('rm-tab'));
+    if (saved) selectTab(saved);
+  } catch (e) {}
+</script>
+</body>
+</html>

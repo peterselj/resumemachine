@@ -1,0 +1,7 @@
+# ResumeMachine
+
+> A free, open set of instructions that turns a general AI assistant (Claude, ChatGPT, Gemini, or similar) into a resume-tailoring workspace. The user keeps their resume in their own AI account; this site stores nothing.
+
+If a user asked you to set up ResumeMachine, read the guide below and follow Part 1 (setup). Part 2 holds the working instructions the user pastes into their Project, GPT, or Gem.
+
+- [ResumeMachine guide](https://peterselj.github.io/resumemachine/resumemachine.md): setup walkthrough for each assistant, plus the full working instructions

@@ -9,6 +9,12 @@
 <meta property="og:url" content="https://peterselj.github.io/resumemachine/">
 <link rel="canonical" href="https://peterselj.github.io/resumemachine/">
 <meta property="og:description" content="Tailor your resume to any job posting with the AI you already use. One-line setup.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://peterselj.github.io/resumemachine/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ResumeMachine: tailor your resume to any job, with the AI you already use.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="text/markdown" href="resumemachine.md" title="ResumeMachine setup guide for AI assistants">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -168,7 +174,53 @@
   footer { padding: 48px 0 40px; color: var(--muted); font-size: 14px; }
   footer .ai-note { overflow-wrap: anywhere; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; }
 
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--forest); outline-offset: 2px; border-radius: 4px;
+  }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: 16px; top: 8px; z-index: 10; background: var(--surface); padding: 8px 12px; border-radius: 6px; }
+
+  /* Sample output: styled like an assistant reply */
+  .sample { padding: 0; overflow: hidden; }
+  .sample-head {
+    display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+    border-bottom: 1px solid var(--line); background: var(--paper-2);
+    font-size: 13px; color: var(--muted);
+  }
+  .sample-head .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); }
+  .sample-body { padding: 18px 20px 20px; }
+  .sample-body h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--forest-text); margin: 18px 0 8px; }
+  .sample-body h3:first-child { margin-top: 0; }
+  .sample-body ul { margin: 0; padding-left: 20px; }
+  .sample-body li { margin-bottom: 4px; }
+  .fit { display: inline-block; font-weight: 600; font-size: 13px; padding: 2px 9px; border-radius: 999px; background: var(--forest-soft); color: var(--forest-text); margin-right: 6px; }
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .compare > div { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; font-size: 15px; }
+  .compare .tag { display: block; font: 600 11px/1 "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; color: var(--faint); }
+  .compare .after { border-color: var(--forest); background: var(--forest-soft); }
+  .compare .after .tag { color: var(--forest-text); }
+  .ph { font-family: "IBM Plex Mono", monospace; font-size: 13px; background: var(--surface); border: 1px dashed var(--line-strong); border-radius: 4px; padding: 0 4px; white-space: nowrap; }
+  .why { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+  .quote { border-left: 3px solid var(--line-strong); padding: 2px 0 2px 12px; margin: 0; color: var(--ink-soft); font-size: 15px; }
+
+  /* FAQ */
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq details:last-child { border-bottom: 0; }
+  .faq summary {
+    cursor: pointer; list-style: none; padding: 14px 28px 14px 0; position: relative;
+    font-weight: 600;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: "+"; position: absolute; right: 4px; top: 12px;
+    font: 500 20px/1 "IBM Plex Mono", monospace; color: var(--muted);
+  }
+  .faq details[open] summary::after { content: "\2212"; }
+  .faq details p { margin: 0 0 14px; color: var(--ink-soft); }
+  .faq .card { padding: 4px 20px; }
+
   @media (max-width: 520px) {
+    .compare { grid-template-columns: 1fr; }
     .prompt-box { flex-direction: column; align-items: stretch; }
     .prompt-box .btn { justify-content: center; }
     .top nav a:first-child { display: none; }
@@ -177,18 +229,19 @@
 </style>
 </head>
 <body>
+<a class="skip" href="#start">Skip to setup</a>
 <header class="top">
   <div class="wrap">
     <a class="brand" href="./">📄 ResumeMachine</a>
     <nav>
-      <a href="#manual">Manual setup</a>
-      <a href="resumemachine.md">Read the instructions</a>
-      <span class="version">v0.1</span>
+      <a href="#example">Example</a>
+      <a href="#manual">Setup</a>
+      <a href="#faq">FAQ</a>
+      <span class="version">v0.2</span>
     </nav>
   </div>
 </header>
-<div class="wrap">
-
+<main class="wrap">
 
   <div class="hero">
     <h1>Tailor your resume to any job, with the AI you already use.</h1>
@@ -222,6 +275,33 @@
       <div class="card"><h3>No fabrication</h3><p>It never invents titles, dates, or numbers. It asks when it needs a detail.</p></div>
       <div class="card"><h3>Referral ask</h3><p>A short message to send a contact at the company, because referrals beat cold applications.</p></div>
     </div>
+  </section>
+
+  <section id="example">
+    <h2>See an example</h2>
+    <p class="sub">A shortened reply for a made-up candidate applying to a Marketing Operations Manager role.</p>
+    <div class="card sample">
+      <div class="sample-head"><span class="dot"></span>ResumeMachine</div>
+      <div class="sample-body">
+        <h3>Fit snapshot</h3>
+        <p style="margin:0 0 8px"><span class="fit">Good fit</span>Strong on campaign operations and cross-team coordination; light on marketing-automation tooling.</p>
+        <ul>
+          <li><strong>Matches:</strong> runs the campaign calendar, works across product teams, owns email reporting.</li>
+          <li><strong>Gap to check:</strong> the posting asks for Marketo. Your resume shows HubSpot. Have you used Marketo at all? If not, that's a real gap; I've framed HubSpot as transferable rather than claiming it.</li>
+        </ul>
+
+        <h3>One bullet, before and after</h3>
+        <div class="compare">
+          <div><span class="tag">Before</span>Responsible for email marketing and the campaign calendar.</div>
+          <div class="after"><span class="tag">After</span>Owned the campaign calendar and HubSpot email program for 4 product teams, lifting open rates from <span class="ph">[X%]</span> to <span class="ph">[Y%]</span>.</div>
+        </div>
+        <p class="why"><strong>Why:</strong> the posting stresses "marketing automation" and "cross-functional," so I used its language. "4 product teams" comes from your Acme role. I don't know your open rates, so I left placeholders instead of guessing.</p>
+
+        <h3>Referral ask</h3>
+        <p class="quote">Hi Priya, I saw Brightline is hiring a Marketing Ops Manager and it lines up closely with the campaign work I've been doing at Acme. Would you be open to a 15-minute chat about the team, or to referring me if it seems like a fit?</p>
+      </div>
+    </div>
+    <p class="fine">The full reply also includes the complete tailored resume, a list of every change, and a few questions to make it stronger.</p>
   </section>
 
   <section>
@@ -301,12 +381,46 @@
     </div>
   </section>
 
+  <section id="faq" class="faq">
+    <h2>Questions</h2>
+    <div class="card">
+      <details>
+        <summary>Where does my resume go?</summary>
+        <p>Only into your own AI account (Claude, ChatGPT, or Gemini), the same as any file you share with it. This site is a static page with no backend, no forms, and no analytics. It never sees your resume or the jobs you apply to.</p>
+      </details>
+      <details>
+        <summary>Does it work on free plans?</summary>
+        <p>Usually. Saved workspaces (Projects, Gems, custom GPTs) are available on many plans, though free plans may limit them or leave them out. If yours doesn't have one, paste the instructions at the start of each chat instead; it works the same, just with one extra step.</p>
+      </details>
+      <details>
+        <summary>Will it make things up to fit the job?</summary>
+        <p>It's instructed not to. It can rephrase, reorder, and reframe what's in your base resume, but it won't invent jobs, titles, dates, skills, or numbers. When a bullet needs a number it doesn't have, it leaves a placeholder like <span class="ph">[X%]</span> and asks. AI can still make mistakes, so read the final version before you send it.</p>
+      </details>
+      <details>
+        <summary>Will it get me past screening software (ATS)?</summary>
+        <p>It uses the posting's own wording where it's true for you and keeps formatting plain (no tables, columns, or graphics), which is what screening software parses best. No tool can guarantee a result, and a referral from someone inside the company does far more than any keyword.</p>
+      </details>
+      <details>
+        <summary>Why isn't this just a website that does it for me?</summary>
+        <p>Because the AI you already use is better at it than anything a small site could build, and your data stays in an account you already trust. ResumeMachine is the part that's hard to get right on your own: a well-tested set of instructions and a setup that takes three minutes.</p>
+      </details>
+      <details>
+        <summary>Can it write cover letters too?</summary>
+        <p>Yes. Every reply includes a few cover-letter angles, and you can ask for a full letter, interview prep, or a LinkedIn summary in the same chat.</p>
+      </details>
+      <details>
+        <summary>What should go in my base resume?</summary>
+        <p>Everything. Think of it as a master copy: every role, project, metric, and win you might ever want to use. Long is fine. ResumeMachine picks what's relevant for each job, but it can't add what isn't there.</p>
+      </details>
+    </div>
+  </section>
+
   <footer>
     <div class="ai-note"><strong>For AI assistants:</strong> the setup guide and working instructions are at <a href="resumemachine.md">peterselj.github.io/resumemachine/resumemachine.md</a>.</div>
     <p>ResumeMachine is part of a small set of job search tools. See also <a href="https://peterselj.github.io/JobBoard/">JobBoard</a>, a referral-first CRM for your job search.</p>
   </footer>
 
-</div>
+</main>
 
 <script>
   function flash(btn, text) {
@@ -347,11 +461,22 @@
     tabs.forEach(t => {
       const on = t === tab;
       t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
       document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
     });
     try { localStorage.setItem('rm-tab', tab.id); } catch (e) {}
   }
-  tabs.forEach(t => t.addEventListener('click', () => selectTab(t)));
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => selectTab(t));
+    t.addEventListener('keydown', e => {
+      const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (!step) return;
+      const next = tabs[(i + step + tabs.length) % tabs.length];
+      selectTab(next);
+      next.focus();
+    });
+  });
+  tabs.forEach(t => { t.tabIndex = t.getAttribute('aria-selected') === 'true' ? 0 : -1; });
   try {
     const saved = document.getElementById(localStorage.getItem('rm-tab'));
     if (saved) selectTab(saved);

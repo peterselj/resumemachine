@@ -138,22 +138,7 @@
   .btn.done, .btn.secondary.done { background: var(--sage); color: #fff; border-color: transparent; }
   .fine { font-size: 14px; color: var(--muted); margin: 12px 0 0; }
 
-  .steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
-  .steps > li { counter-increment: s; position: relative; padding: 0 0 18px 42px; }
-  .steps > li::before {
-    content: counter(s); position: absolute; left: 0; top: 0;
-    width: 26px; height: 26px; border-radius: 50%;
-    background: var(--forest); color: var(--on-forest);
-    font: 600 13px/26px "IBM Plex Mono", monospace; text-align: center;
-  }
-  .steps > li:last-child { padding-bottom: 0; }
-  .steps strong { display: block; }
-  .steps p { margin: 2px 0 0; color: var(--muted); }
 
-  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .grid .card { padding: 16px; }
-  .grid h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; letter-spacing: 0; }
-  .grid p { margin: 0; font-size: 14.5px; color: var(--muted); }
 
   .tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
   .tab {
@@ -169,7 +154,6 @@
   .note { font-size: 14px; color: var(--muted); margin: 14px 0 0; }
   .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
 
-  .tips li { margin-bottom: 8px; }
 
   footer { padding: 48px 0 40px; color: var(--muted); font-size: 14px; }
   footer .ai-note { overflow-wrap: anywhere; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; }
@@ -224,7 +208,6 @@
     .prompt-box { flex-direction: column; align-items: stretch; }
     .prompt-box .btn { justify-content: center; }
     .top nav a:first-child { display: none; }
-    .grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -237,7 +220,7 @@
       <a href="#example">Example</a>
       <a href="#manual">Setup</a>
       <a href="#faq">FAQ</a>
-      <span class="version">v0.2</span>
+      <span class="version">v0.3</span>
     </nav>
   </div>
 </header>
@@ -245,80 +228,55 @@
 
   <div class="hero">
     <h1>Tailor your resume to any job, with the AI you already use.</h1>
-    <p class="lede">ResumeMachine turns Claude, ChatGPT, or Gemini into a resume editor that reads a job posting, tells you honestly how you fit, and rewrites your resume for it, without making anything up.</p>
+    <p class="lede">Turn Claude, ChatGPT, or Gemini into an honest resume editor. Paste a job posting, get back a tailored resume.</p>
     <div class="pills">
       <span class="pill">Free</span>
       <span class="pill">No signup</span>
-      <span class="pill">Your resume never touches this site</span>
-      <span class="pill">Works with Claude · ChatGPT · Gemini</span>
+      <span class="pill">Your resume stays in your AI account</span>
     </div>
   </div>
 
   <section id="start">
     <div class="card quick">
-      <div class="label">Fastest setup: one message</div>
-      <p style="margin:8px 0 0">Paste this into a new chat with your AI assistant. It'll walk you through the rest.</p>
+      <div class="label">Set up in one message</div>
+      <p style="margin:8px 0 0">Paste this into a new chat with your AI assistant:</p>
       <div class="prompt-box">
         <code id="oneliner">Read https://peterselj.github.io/resumemachine/resumemachine.md and walk me through setting up ResumeMachine.</code>
         <button class="btn" data-copy="oneliner">Copy</button>
       </div>
-      <p class="fine">Some assistants can't open links, depending on the app or plan. If yours says it can't, use the <a href="#manual">manual setup</a> below. It takes about three minutes.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>What you get, for every job</h2>
-    <p class="sub">Paste a job posting into your ResumeMachine workspace and get back:</p>
-    <div class="grid">
-      <div class="card"><h3>Honest fit check</h3><p>Strong, stretch, or long shot, plus your best matches and real gaps.</p></div>
-      <div class="card"><h3>Tailored resume</h3><p>Reordered, reworded, and keyword-matched to the posting. Ready to paste.</p></div>
-      <div class="card"><h3>No fabrication</h3><p>It never invents titles, dates, or numbers. It asks when it needs a detail.</p></div>
-      <div class="card"><h3>Referral ask</h3><p>A short message to send a contact at the company, because referrals beat cold applications.</p></div>
+      <p class="fine">Assistant can't open links? <a href="#manual">Set it up yourself</a> instead. It takes three minutes.</p>
     </div>
   </section>
 
   <section id="example">
-    <h2>See an example</h2>
-    <p class="sub">A shortened reply for a made-up candidate applying to a Marketing Operations Manager role.</p>
+    <h2>What you get back</h2>
+    <p class="sub">A shortened example for a Marketing Operations Manager posting.</p>
     <div class="card sample">
       <div class="sample-head"><span class="dot"></span>ResumeMachine</div>
       <div class="sample-body">
-        <h3>Fit snapshot</h3>
-        <p style="margin:0 0 8px"><span class="fit">Good fit</span>Strong on campaign operations and cross-team coordination; light on marketing-automation tooling.</p>
+        <h3>Fit check</h3>
+        <p style="margin:0 0 8px"><span class="fit">Good fit</span>Strong on campaign operations; light on marketing-automation tools.</p>
         <ul>
-          <li><strong>Matches:</strong> runs the campaign calendar, works across product teams, owns email reporting.</li>
-          <li><strong>Gap to check:</strong> the posting asks for Marketo. Your resume shows HubSpot. Have you used Marketo at all? If not, that's a real gap; I've framed HubSpot as transferable rather than claiming it.</li>
+          <li><strong>Gap:</strong> the posting asks for Marketo and your resume shows HubSpot. Have you used Marketo? If not, I've framed HubSpot as transferable rather than claiming it.</li>
         </ul>
 
-        <h3>One bullet, before and after</h3>
+        <h3>Rewritten bullets</h3>
         <div class="compare">
           <div><span class="tag">Before</span>Responsible for email marketing and the campaign calendar.</div>
           <div class="after"><span class="tag">After</span>Owned the campaign calendar and HubSpot email program for 4 product teams, lifting open rates from <span class="ph">[X%]</span> to <span class="ph">[Y%]</span>.</div>
         </div>
-        <p class="why"><strong>Why:</strong> the posting stresses "marketing automation" and "cross-functional," so I used its language. "4 product teams" comes from your Acme role. I don't know your open rates, so I left placeholders instead of guessing.</p>
+        <p class="why">I don't know your open rates, so I left placeholders instead of guessing.</p>
 
         <h3>Referral ask</h3>
-        <p class="quote">Hi Priya, I saw Brightline is hiring a Marketing Ops Manager and it lines up closely with the campaign work I've been doing at Acme. Would you be open to a 15-minute chat about the team, or to referring me if it seems like a fit?</p>
+        <p class="quote">Hi Priya, I saw Brightline is hiring a Marketing Ops Manager, and it lines up closely with my campaign work at Acme. Open to a quick chat about the team, or a referral if it seems like a fit?</p>
       </div>
     </div>
-    <p class="fine">The full reply also includes the complete tailored resume, a list of every change, and a few questions to make it stronger.</p>
-  </section>
-
-  <section>
-    <h2>How it works</h2>
-    <p class="sub">You set up a permanent workspace once. After that, every job takes about a minute.</p>
-    <div class="card">
-      <ol class="steps">
-        <li><strong>Create a workspace in your AI app</strong><p>A Project in Claude or ChatGPT, or a Gem in Gemini. It remembers the instructions and your resume.</p></li>
-        <li><strong>Add the ResumeMachine instructions and your base resume</strong><p>The instructions are a plain text file you can <a href="resumemachine.md">read in full</a>. Your resume goes straight into your own AI account.</p></li>
-        <li><strong>Paste a job posting</strong><p>Open a new chat in the workspace, paste the full posting, and review what comes back.</p></li>
-      </ol>
-    </div>
+    <p class="fine">The full reply includes the complete tailored resume and a list of what changed.</p>
   </section>
 
   <section id="manual">
-    <h2>Manual setup</h2>
-    <p class="sub">Prefer to do it yourself? Get the instructions file, then follow the steps for your assistant.</p>
+    <h2>Set it up yourself</h2>
+    <p class="sub">One-time setup. After that, each job takes about a minute.</p>
     <div class="card">
       <div class="actions">
         <a class="btn" href="resumemachine.md" download="ResumeMachine.md">Download instructions</a>
@@ -334,50 +292,37 @@
 
       <div class="panel" role="tabpanel" id="p-claude" aria-labelledby="t-claude">
         <ol>
-          <li>Go to <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> and open <strong>Projects</strong> in the sidebar, then <strong>Create project</strong>. Name it "ResumeMachine".</li>
-          <li>Open the project's <strong>instructions</strong> and paste the ResumeMachine instructions.</li>
-          <li>Upload your base resume to the project's <strong>files</strong>.</li>
-          <li>Start a new chat in the project and paste a job posting.</li>
+          <li>On <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>, go to <strong>Projects → Create project</strong>.</li>
+          <li>Paste the instructions into the project's <strong>instructions</strong>.</li>
+          <li>Upload your resume to the project's <strong>files</strong>.</li>
+          <li>Start a chat in the project and paste a job posting.</li>
         </ol>
       </div>
       <div class="panel" role="tabpanel" id="p-chatgpt" aria-labelledby="t-chatgpt" hidden>
         <ol>
-          <li>Go to <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a> and choose <strong>New project</strong> in the sidebar. Name it "ResumeMachine".</li>
-          <li>Open the project settings and paste the ResumeMachine instructions into <strong>Instructions</strong>.</li>
-          <li>Add your base resume under the project's <strong>Files</strong>.</li>
-          <li>Start a new chat in the project and paste a job posting.</li>
+          <li>On <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a>, choose <strong>New project</strong>.</li>
+          <li>Paste the instructions into the project's <strong>Instructions</strong>.</li>
+          <li>Upload your resume to the project's <strong>Files</strong>.</li>
+          <li>Start a chat in the project and paste a job posting.</li>
         </ol>
-        <p class="note">No Projects on your plan? Make a private custom GPT instead: paste the instructions on the Configure tab and upload your resume under Knowledge.</p>
+        <p class="note">No Projects? Use a private custom GPT: instructions on the Configure tab, resume under Knowledge.</p>
       </div>
       <div class="panel" role="tabpanel" id="p-gemini" aria-labelledby="t-gemini" hidden>
         <ol>
-          <li>Go to <a href="https://gemini.google.com" target="_blank" rel="noopener">gemini.google.com</a>, open the <strong>Gem manager</strong>, and choose <strong>New Gem</strong>. Name it "ResumeMachine".</li>
-          <li>Paste the ResumeMachine instructions into the Gem's <strong>Instructions</strong>.</li>
-          <li>Upload your base resume under <strong>Knowledge</strong>.</li>
+          <li>On <a href="https://gemini.google.com" target="_blank" rel="noopener">gemini.google.com</a>, open <strong>Gem manager → New Gem</strong>.</li>
+          <li>Paste the instructions into the Gem's <strong>Instructions</strong>.</li>
+          <li>Upload your resume under <strong>Knowledge</strong>.</li>
           <li>Save, open the Gem, and paste a job posting.</li>
         </ol>
       </div>
       <div class="panel" role="tabpanel" id="p-other" aria-labelledby="t-other" hidden>
         <ol>
-          <li>Look for a feature that saves instructions and files across chats. It might be called projects, spaces, agents, or custom instructions.</li>
-          <li>If you find one, paste the ResumeMachine instructions and attach your base resume.</li>
-          <li>If not, start each chat by pasting the instructions and attaching your resume, then paste the job posting.</li>
+          <li>Look for a feature that saves instructions and files across chats (projects, spaces, agents).</li>
+          <li>Paste the instructions and attach your resume there.</li>
+          <li>No such feature? Paste the instructions and resume at the start of each chat.</li>
         </ol>
       </div>
-      <p class="note">App menus change often. If a label doesn't match exactly, look for the closest equivalent, or ask the assistant itself where to find it.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Tips for better results</h2>
-    <div class="card">
-      <ul class="tips" style="margin:0;padding-left:20px">
-        <li><strong>Make your base resume a master copy.</strong> Long is fine. Include every role, project, and win you might want to use. ResumeMachine picks what's relevant; it can't add what isn't there.</li>
-        <li><strong>Include numbers.</strong> Team sizes, budgets, percentages, timeframes. These make the strongest bullets.</li>
-        <li><strong>Paste the full posting text</strong>, not just a link. Many job sites block AI assistants from reading them.</li>
-        <li><strong>Answer its questions.</strong> When it asks for a detail, your answer makes the resume better. Add it to your base resume too.</li>
-        <li><strong>Always read the final version.</strong> It's your name on it. Check every claim before you send it.</li>
-      </ul>
+      <p class="note">Menus change often. If a label doesn't match, ask your assistant where to find it.</p>
     </div>
   </section>
 
@@ -386,31 +331,23 @@
     <div class="card">
       <details>
         <summary>Where does my resume go?</summary>
-        <p>Only into your own AI account (Claude, ChatGPT, or Gemini), the same as any file you share with it. This site is a static page with no backend, no forms, and no analytics. It never sees your resume or the jobs you apply to.</p>
+        <p>Only into your own AI account. This site has no backend, no forms, and no analytics.</p>
       </details>
       <details>
-        <summary>Does it work on free plans?</summary>
-        <p>Usually. Saved workspaces (Projects, Gems, custom GPTs) are available on many plans, though free plans may limit them or leave them out. If yours doesn't have one, paste the instructions at the start of each chat instead; it works the same, just with one extra step.</p>
+        <summary>What should my resume include?</summary>
+        <p>Everything: every role, project, win, and number you might want to use. Long is fine. ResumeMachine picks what's relevant, but it can't add what isn't there.</p>
       </details>
       <details>
-        <summary>Will it make things up to fit the job?</summary>
-        <p>It's instructed not to. It can rephrase, reorder, and reframe what's in your base resume, but it won't invent jobs, titles, dates, skills, or numbers. When a bullet needs a number it doesn't have, it leaves a placeholder like <span class="ph">[X%]</span> and asks. AI can still make mistakes, so read the final version before you send it.</p>
+        <summary>Will it make things up?</summary>
+        <p>It's instructed not to invent jobs, titles, dates, skills, or numbers, and leaves placeholders like <span class="ph">[X%]</span> when it needs a detail. AI still makes mistakes, so read the final version before you send it.</p>
       </details>
       <details>
         <summary>Will it get me past screening software (ATS)?</summary>
-        <p>It uses the posting's own wording where it's true for you and keeps formatting plain (no tables, columns, or graphics), which is what screening software parses best. No tool can guarantee a result, and a referral from someone inside the company does far more than any keyword.</p>
+        <p>It uses the posting's wording where it's true for you and keeps formatting plain, which screening software reads best. Nothing is guaranteed, and a referral helps far more than any keyword.</p>
       </details>
       <details>
-        <summary>Why isn't this just a website that does it for me?</summary>
-        <p>Because the AI you already use is better at it than anything a small site could build, and your data stays in an account you already trust. ResumeMachine is the part that's hard to get right on your own: a well-tested set of instructions and a setup that takes three minutes.</p>
-      </details>
-      <details>
-        <summary>Can it write cover letters too?</summary>
-        <p>Yes. Every reply includes a few cover-letter angles, and you can ask for a full letter, interview prep, or a LinkedIn summary in the same chat.</p>
-      </details>
-      <details>
-        <summary>What should go in my base resume?</summary>
-        <p>Everything. Think of it as a master copy: every role, project, metric, and win you might ever want to use. Long is fine. ResumeMachine picks what's relevant for each job, but it can't add what isn't there.</p>
+        <summary>Does it work on free plans?</summary>
+        <p>Usually. If your plan has no Projects or Gems, paste the instructions at the start of each chat instead.</p>
       </details>
     </div>
   </section>

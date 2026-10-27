@@ -14,6 +14,7 @@ Static GitHub Pages site (no build step) that helps job seekers set up a resume-
 - `resumemachine.md` is the product. Part 1 is a setup walkthrough an AI assistant follows; Part 2 is the working instructions users paste into a Project / GPT / Gem.
   - Part 1 tells assistants to copy "from `# Part 2: Working instructions` to the end of the file". Don't rename that heading or add content after Part 2.
   - It must work for Claude, ChatGPT, Gemini, and others. Don't add features only one assistant supports without a fallback.
+  - Versioning: when Part 2 changes, bump the version in both the "Current version" line under What's new and the version line at the top of Part 2, and add a one-line What's new entry written for users. Installed copies use this to detect updates; the `Check site` workflow fails if they disagree.
   - Nothing is hidden from humans. The file is written to be readable by both people and AIs.
 - `index.html` is the human page: plain HTML/CSS/JS in one file, no frameworks. The setup tabs must stay in sync with Part 1.
 - `llms.txt` points AI assistants to the instructions. `.nojekyll` keeps GitHub Pages from converting the `.md` to HTML; don't delete it.

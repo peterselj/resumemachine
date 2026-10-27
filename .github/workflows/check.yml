@@ -21,6 +21,17 @@ jobs:
         run: |
           grep -q '^# Part 1: Setup$' resumemachine.md || { echo "::error file=resumemachine.md::'# Part 1: Setup' heading is missing or renamed"; exit 1; }
           grep -q '^# Part 2: Working instructions$' resumemachine.md || { echo "::error file=resumemachine.md::'# Part 2: Working instructions' heading is missing or renamed"; exit 1; }
+      - name: Version numbers match
+        # The update check compares the "Current version" line in What's new
+        # with the version line inside Part 2, so they must agree.
+        run: |
+          current=$(grep -oP '^\*\*Current version: \K[0-9.]+' resumemachine.md || true)
+          part2=$(grep -oP '^\*\*ResumeMachine version \K[0-9.]+' resumemachine.md || true)
+          [ -n "$current" ] || { echo "::error file=resumemachine.md::Missing '**Current version: X.Y' line in What's new"; exit 1; }
+          [ -n "$part2" ] || { echo "::error file=resumemachine.md::Missing '**ResumeMachine version X.Y' line in Part 2"; exit 1; }
+          [ "$current" = "$part2" ] || { echo "::error file=resumemachine.md::What's new says $current but Part 2 says $part2"; exit 1; }
+          grep -q "^- \*\*$current " resumemachine.md || { echo "::error file=resumemachine.md::No What's new entry for $current"; exit 1; }
+          echo "Version $current"
       - name: Page and llms.txt point at the instructions
         run: |
           grep -q 'resumemachine.md' index.html || { echo "::error file=index.html::No link to resumemachine.md"; exit 1; }

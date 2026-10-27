@@ -1,0 +1,48 @@
+name: Check site
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Required files exist
+        run: |
+          for f in index.html resumemachine.md llms.txt .nojekyll; do
+            test -f "$f" || { echo "::error::Missing $f"; exit 1; }
+          done
+      - name: Instructions keep the headings the setup flow depends on
+        # Part 1 tells assistants to copy from the Part 2 heading to the end of
+        # the file, so renaming either heading silently breaks setup.
+        run: |
+          grep -q '^# Part 1: Setup$' resumemachine.md || { echo "::error file=resumemachine.md::'# Part 1: Setup' heading is missing or renamed"; exit 1; }
+          grep -q '^# Part 2: Working instructions$' resumemachine.md || { echo "::error file=resumemachine.md::'# Part 2: Working instructions' heading is missing or renamed"; exit 1; }
+      - name: Page and llms.txt point at the instructions
+        run: |
+          grep -q 'resumemachine.md' index.html || { echo "::error file=index.html::No link to resumemachine.md"; exit 1; }
+          grep -q 'peterselj.github.io/resumemachine/resumemachine.md' llms.txt || { echo "::error file=llms.txt::No link to the instructions URL"; exit 1; }
+      - name: HTML is well-formed
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          VOID = {"area","base","br","col","embed","hr","img","input","link","meta","source","track","wbr"}
+          class P(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.stack = []
+              def handle_starttag(self, tag, attrs):
+                  if tag not in VOID: self.stack.append((tag, self.getpos()[0]))
+              def handle_endtag(self, tag):
+                  if tag in VOID: return
+                  if not self.stack or self.stack[-1][0] != tag:
+                      raise SystemExit(f"::error file=index.html,line={self.getpos()[0]}::Unexpected </{tag}>")
+                  self.stack.pop()
+          p = P(); p.feed(open("index.html").read())
+          if p.stack:
+              tag, line = p.stack[-1]
+              raise SystemExit(f"::error file=index.html,line={line}::<{tag}> is never closed")
+          print("index.html OK")
+          PY

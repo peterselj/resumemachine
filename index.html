@@ -185,7 +185,6 @@
   .compare .after .tag { color: var(--forest-text); }
   .ph { font-family: "IBM Plex Mono", monospace; font-size: 13px; background: var(--surface); border: 1px dashed var(--line-strong); border-radius: 4px; padding: 0 4px; white-space: nowrap; }
   .why { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
-  .quote { border-left: 3px solid var(--line-strong); padding: 2px 0 2px 12px; margin: 0; color: var(--ink-soft); font-size: 15px; }
 
   /* FAQ */
   .faq details { border-bottom: 1px solid var(--line); }
@@ -254,6 +253,7 @@
     <div class="card sample">
       <div class="sample-head"><span class="dot"></span>ResumeMachine</div>
       <div class="sample-body">
+        <p class="why" style="margin:0 0 16px"><strong>Working from:</strong> Alex Rivera Resume 2026-10-21, last edited Oct 21, 2026. Not your latest version? Re-add or sync it in your workspace.</p>
         <h3>Fit check</h3>
         <p style="margin:0 0 8px"><span class="fit">Good fit</span>Strong on campaign operations; light on marketing-automation tools.</p>
         <ul>
@@ -267,8 +267,8 @@
         </div>
         <p class="why">I don't know your open rates, so I left placeholders instead of guessing.</p>
 
-        <h3>Referral ask</h3>
-        <p class="quote">Hi Priya, I saw Brightline is hiring a Marketing Ops Manager, and it lines up closely with my campaign work at Acme. Open to a quick chat about the team, or a referral if it seems like a fit?</p>
+        <h3>Ready to edit</h3>
+        <p style="margin:0">Copy the resume above into a blank Google Doc (<a href="https://docs.new" target="_blank" rel="noopener">docs.new</a>) to make your edits. Want a Word version too?</p>
       </div>
     </div>
     <p class="fine">The full reply includes the complete tailored resume and a list of what changed.</p>
@@ -294,7 +294,7 @@
         <ol>
           <li>On <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>, go to <strong>Projects → Create project</strong>.</li>
           <li>Paste the instructions into the project's <strong>instructions</strong>.</li>
-          <li>Upload your resume to the project's <strong>files</strong>.</li>
+          <li>Add your resume to the project's <strong>files</strong>, ideally as a Google Doc from Drive.</li>
           <li>Start a chat in the project and paste a job posting.</li>
         </ol>
       </div>
@@ -302,7 +302,7 @@
         <ol>
           <li>On <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a>, choose <strong>New project</strong>.</li>
           <li>Paste the instructions into the project's <strong>Instructions</strong>.</li>
-          <li>Upload your resume to the project's <strong>Files</strong>.</li>
+          <li>Add your resume to the project's <strong>Files</strong>, ideally as a Google Doc from Drive.</li>
           <li>Start a chat in the project and paste a job posting.</li>
         </ol>
         <p class="note">No Projects? Use a private custom GPT: instructions on the Configure tab, resume under Knowledge.</p>
@@ -311,7 +311,7 @@
         <ol>
           <li>On <a href="https://gemini.google.com" target="_blank" rel="noopener">gemini.google.com</a>, open <strong>Gem manager → New Gem</strong>.</li>
           <li>Paste the instructions into the Gem's <strong>Instructions</strong>.</li>
-          <li>Upload your resume under <strong>Knowledge</strong>.</li>
+          <li>Add your resume under <strong>Knowledge</strong>, ideally as a Google Doc from Drive.</li>
           <li>Save, open the Gem, and paste a job posting.</li>
         </ol>
       </div>
@@ -322,6 +322,7 @@
           <li>No such feature? Paste the instructions and resume at the start of each chat.</li>
         </ol>
       </div>
+      <p class="note"><strong>Tip:</strong> keep your resume as a Google Doc with a date in its name, like <code>Jake Smith Resume 2026-10-28</code>. Each chat shows the file name it's using, so an old copy is easy to spot.</p>
       <p class="note">Menus change often. If a label doesn't match, ask your assistant where to find it.</p>
     </div>
   </section>
@@ -343,7 +344,7 @@
       </details>
       <details>
         <summary>Can I get it as a Word doc or Google Doc?</summary>
-        <p>Yes. It offers an editable file after each tailored resume. If your assistant can't create files, it'll tell you the quickest way, and copy-pasting into a blank Google Doc always works.</p>
+        <p>Yes. Each tailored resume comes back as a Google Doc, or with the quickest way to make one, and it offers a Word version too.</p>
       </details>
       <details>
         <summary>How do I get updates?</summary>

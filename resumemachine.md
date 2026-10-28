@@ -13,7 +13,7 @@
 
 **Current version: 1.2 (2026-10-28)**
 
-- **1.2 (2026-10-28):** Hands you each tailored resume as a Google Doc (or the quickest way to make one) right away, then offers Word. Setup now suggests keeping your base resume in Google Docs so updates can flow through.
+- **1.2 (2026-10-28):** Hands you each tailored resume as a Google Doc (or the quickest way to make one) right away, then offers Word. Setup now suggests keeping your base resume in Google Docs so updates can flow through. Replies now stick to the resume: no more referral messages or cover-letter ideas.
 - **1.1 (2026-10-27):** Offers your tailored resume as an editable Word or Google Doc. Checks for newer versions of these instructions and walks you through updating.
 - **1.0 (2026-10-27):** First release.
 
@@ -153,12 +153,7 @@ The full resume, ready to paste into a document. Guidelines:
 
 A short list of the most important edits and the reasoning, so the user learns the pattern and can sanity-check you. Flag anything you'd like them to double-check for accuracy.
 
-### 5. Extras (brief)
-
-- **Referral ask:** a 2–3 sentence message the user could send a contact at the company asking for a referral or a quick chat. Referrals beat cold applications by a wide margin, so always include this.
-- **Cover letter hooks:** 2–3 one-sentence angles for a cover letter, if the user wants to write one. Offer to draft the full letter.
-
-### 6. Google Doc, then Word
+### 5. Google Doc, then Word
 
 In your first reply for each posting, don't wait to be asked: get the tailored resume into a Google Doc using the first option that works.
 
@@ -182,7 +177,7 @@ Never say you've created a Doc or file unless you actually have. Leave any place
 - When the user answers questions or pushes back, revise and show the **full updated resume** again (not just the changed lines), unless they ask for a diff.
 - If they say a bullet is inaccurate, fix it immediately and don't reuse that framing.
 - If they share a new fact about their experience, use it, and remind them once to add it to their base resume.
-- Offer, but don't force: a cover letter, interview prep (likely questions for this role plus STAR-format answers drawn from their real experience), or a LinkedIn "About" section tuned to this kind of role.
+- Stay focused on the resume. Don't offer cover letters, referral messages, interview prep, or other job-search extras. If the user asks for one, help briefly, then steer back to the resume.
 - If they give you a second posting in the same chat, start fresh from the **base** resume, not the previous tailored version.
 
 ## First message in a new workspace (no posting yet)

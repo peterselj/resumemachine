@@ -117,6 +117,10 @@
     padding: 20px;
   }
   .quick { border: 1px solid var(--forest); box-shadow: 0 0 0 3px var(--forest-soft); }
+  .handoff-role { font-size: 20px; font-weight: 700; margin: 6px 0 0; overflow-wrap: anywhere; }
+  .handoff-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .handoff-actions .btn { text-decoration: none; display: inline-block; }
+  .handoff-actions [hidden] { display: none; }
   .label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--forest-text); }
   .prompt-box {
     display: flex; gap: 12px; align-items: center; margin-top: 12px;
@@ -234,6 +238,22 @@
       <span class="pill">Your resume stays in your AI account</span>
     </div>
   </div>
+
+  <!-- Shown only when someone arrives from JobSnipe's "Tailor resume" button (see the script below). -->
+  <section id="handoff" hidden>
+    <div class="card quick">
+      <div class="label">From JobSnipe</div>
+      <h2 class="handoff-role" id="handoff-role"></h2>
+      <p id="handoff-how" style="margin:8px 0 0"></p>
+      <div class="handoff-actions">
+        <a class="btn" id="handoff-claude" href="https://claude.ai/projects" target="_blank" rel="noopener">Open Claude</a>
+        <a class="btn secondary" id="handoff-chatgpt" href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT</a>
+        <a class="btn secondary" id="handoff-gemini" href="https://gemini.google.com/gems/view" target="_blank" rel="noopener">Open Gemini</a>
+        <a class="btn secondary" id="handoff-job" target="_blank" rel="noopener" hidden>Open the job posting</a>
+      </div>
+      <p class="fine">Open your ResumeMachine workspace there and start a new chat. No workspace yet? <a href="#start">Set it up first</a>; it takes three minutes.</p>
+    </div>
+  </section>
 
   <section id="start">
     <div class="card quick">
@@ -401,6 +421,40 @@
       flash(btn, 'Copy failed');
     }
   });
+
+  // Arriving from JobSnipe's "Tailor resume" button: ?from=jobsnipe&title=…&company=…&job=…&copied=1.
+  // The address can be written by anyone, so its words are only ever shown as plain text, and the
+  // job link is only used if it's an ordinary web address.
+  (function handoff() {
+    const q = new URLSearchParams(location.search);
+    if (q.get('from') !== 'jobsnipe') return;
+    const title = (q.get('title') || '').slice(0, 200).trim();
+    const company = (q.get('company') || '').slice(0, 120).trim();
+    if (!title) return;
+    document.getElementById('handoff-role').textContent = company ? `${title} at ${company}` : title;
+    document.getElementById('handoff-how').textContent = q.get('copied') === '1'
+      ? 'The job posting is on your clipboard. Open your ResumeMachine chat and paste it.'
+      : 'Open the job posting, copy its full text, and paste it into your ResumeMachine chat.';
+    try {
+      const job = new URL(q.get('job') || '');
+      if (job.protocol === 'https:' || job.protocol === 'http:') {
+        const a = document.getElementById('handoff-job');
+        a.href = job.href;
+        a.hidden = false;
+      }
+    } catch (e) {}
+    // Put the assistant they set up with first (remembered from the setup tabs).
+    try {
+      const used = (localStorage.getItem('rm-tab') || '').replace('t-', '');
+      const mine = document.getElementById('handoff-' + used);
+      if (mine) {
+        document.querySelectorAll('.handoff-actions .btn').forEach(b => b.classList.add('secondary'));
+        mine.classList.remove('secondary');
+        mine.parentNode.prepend(mine);
+      }
+    } catch (e) {}
+    document.getElementById('handoff').hidden = false;
+  })();
 
   const tabs = document.querySelectorAll('.tab');
   function selectTab(tab) {
